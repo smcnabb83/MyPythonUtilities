@@ -2,9 +2,8 @@ import os
 import re
 import argparse
 
-programmingFileTypes = re.compile(r"\.(accdb|accde)$", re.IGNORECASE)
+fileTypes = re.compile(r"\.(accdb|accde)$", re.IGNORECASE)
 # Fill this out with network locations you want to search
-programmingFileLocations = [r"\\elite\facstaff$"]
 
 
 class programArgs:
@@ -49,8 +48,7 @@ def walker(path, searchstring, scr):
     for root, dirs, files in os.walk(path):
         scr.updateCurSearch(root)
         for file_ in files:
-            if programmingFileTypes.search(str(file_)):
-                scr
+            if fileTypes.search(str(file_)):
                 try:
                     openfile = open(os.path.join(root, file_))
                     if searchstring.lower() in openfile.read().lower():
@@ -65,7 +63,7 @@ def findFilePaths(path, args):
     outlist = []
     for root, dirs, files in os.walk(path):
         for file_ in files:
-            if programmingFileTypes.search(str(file_)):
+            if fileTypes.search(str(file_)):
                 if root not in outlist:
                     outlist.append(root)
 
@@ -112,8 +110,6 @@ def mainApp():
                 currentLine = line.split(",")
                 for cl in currentLine:
                     PathsList.append(cl)
-    else:
-        PathsList = programmingFileLocations
 
     for location in PathsList:
         if(args.updateFileLocationList):
